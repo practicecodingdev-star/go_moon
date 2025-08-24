@@ -10,13 +10,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceHeight = MediaQuery.of(context).size.height;
     // TODO: implement build
     return MaterialApp(
       title: "Go Moon",
       theme: ThemeData(
-        scaffoldBackgroundColor: Color.fromRGBO(31, 31, 31, 1.0)
+        scaffoldBackgroundColor: Color.fromRGBO(31, 31, 31, 1.0),
       ),
-      home: HomePage(),
+      home: HomePage(deviceHeight: deviceHeight, deviceWidth: deviceWidth,),
     );
   }
 }

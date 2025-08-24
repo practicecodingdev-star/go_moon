@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_moon/widgets/custom_button_dropdown.dart';
 
 class HomePage extends StatelessWidget {
-  late double _deviceHeight, _deviceWidth;
-  HomePage({super.key});
+  final double deviceHeight, deviceWidth;
+  const HomePage({super.key, required this.deviceHeight, required this.deviceWidth});
   Widget _astronautImageAsset() {
     return Container(
+      width: deviceWidth * 0.64,
+      height: deviceHeight * 0.64,
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.fitWidth,
@@ -25,32 +28,85 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget _bookRideWidget() {
+    return SizedBox(
+      height: deviceHeight * 0.25,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _destinationDropDownWidget(),
+          _travellersInformationWidget(),
+          _rideButton(),
+        ],
+      ),
+    );
+  }
+
   Widget _destinationDropDownWidget() {
-    List<DropdownMenuItem> items = ["James Webb Station", "Preneure Station"]
-        .map((e) {
-          return DropdownMenuItem(value: e, child: Text(e));
-        })
-        .toList();
-    return DropdownButton(items: items, onChanged: (_) {});
+    List<String> items = ["James Webb Station", "Preneure Station"];
+    return CustomButtonDropdown(items: items, width: deviceWidth);
+  }
+
+  Widget _travellersInformationWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        CustomButtonDropdown(
+          items: const ['1', '2', '3', '4'],
+          width: deviceWidth * 0.45,
+        ),
+        CustomButtonDropdown(
+          items: const ['Economy', 'Business', 'First', 'Private'],
+          width: deviceWidth * 0.40,
+        ),
+      ],
+    );
+  }
+
+  Widget _rideButton() {
+    return Container(
+      width: deviceWidth,
+      margin: EdgeInsets.only(bottom: deviceHeight * 0.02),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10)
+      ),
+      child: MaterialButton(
+        onPressed: (){},
+        child: Text(
+          'Book Ride!', 
+          style: TextStyle(
+            color: Colors.black
+          ),)
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    _deviceHeight = MediaQuery.of(context).size.height;
-    _deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
         child: Container(
-          height: _deviceHeight,
-          width: _deviceWidth,
-          padding: EdgeInsets.symmetric(horizontal: _deviceWidth * 0.05),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
+          height: deviceHeight,
+          width: deviceWidth,
+          padding: EdgeInsets.symmetric(horizontal: deviceWidth * 0.05),
+          child: Stack(
             children: [
-              _pageTitle(),
-              _destinationDropDownWidget(),
-            ],
+              Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [_pageTitle(), _bookRideWidget(), ],
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: _astronautImageAsset(),
+            )
+           ]
           ),
         ),
       ),
